@@ -4,6 +4,7 @@ from firebase_admin import credentials, initialize_app, storage
 from pydantic import BaseModel
 import firebase_admin
 import uuid
+import os ,json
 
 app = FastAPI()
 
@@ -16,7 +17,9 @@ app.add_middleware(
 )
 
 if not firebase_admin._apps:
-    cred = credentials.Certificate("ServiceAccountKey.json")
+    #cred = credentials.Certificate("ServiceAccountKey.json")
+    firebase_json = os.environ.get("FIREBASE_KEY_JSON")
+    cred = credentials.Certificate(json.loads(firebase_json))
     initialize_app(cred, {
         'storageBucket': 'micropigmentacion-6c4f2.firebasestorage.app'
     })
